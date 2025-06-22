@@ -12,8 +12,12 @@
 
         <quarkus.platform.version>3.23.4</quarkus.platform.version>
         <assertj.version>3.27.3</assertj.version>
+        <quarkus-ide-config.version>3.0.0.Final</quarkus-ide-config.version>
+
         <surefire-plugin.version>3.5.3</surefire-plugin.version>
         <compiler-plugin.version>3.14.0</compiler-plugin.version>
+        <formatter-plugin.version>2.26.0</formatter-plugin.version>
+        <impsort-plugin.version>1.12.0</impsort-plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -71,6 +75,37 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>net.revelc.code</groupId>
+                    <artifactId>impsort-maven-plugin</artifactId>
+                    <version>${impsort-plugin.version}</version>
+                    <configuration>
+                        <groups>java.,javax.,jakarta.,org.,com.</groups>
+                        <staticGroups>*</staticGroups>
+                        <removeUnused>true</removeUnused>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>net.revelc.code.formatter</groupId>
+                    <artifactId>formatter-maven-plugin</artifactId>
+                    <version>${formatter-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>io.quarkus</groupId>
+                            <artifactId>quarkus-ide-config</artifactId>
+                            <version>${quarkus-ide-config.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <configFile>eclipse-format.xml</configFile>
+                        <lineEnding>LF</lineEnding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>${quarkus.platform.group-id}</groupId>
@@ -124,6 +159,34 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>net.revelc.code.formatter</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>format-sources</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.revelc.code</groupId>
+                <artifactId>impsort-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sort-imports</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>sort</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
