@@ -1,6 +1,5 @@
 package org.l2x6.echo.uuid.ws;
 
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -16,8 +15,9 @@ public class EchoUuidWsTest {
 
     @Test
     void getUuid() {
-        Assertions.assertThat(EchoUuidWsRoutes.getUuid("<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:echoUuid xmlns:ns2=\"http://l2x6.org/echo-uuid-ws/\"><uuid>85f02a6a-063c-4d09-97ea-ff2d514fd7f7</uuid></ns2:echoUuid></soap:Body></soap:Envelope>"))
-        .isEqualTo("85f02a6a-063c-4d09-97ea-ff2d514fd7f7");
+        Assertions.assertThat(EchoUuidWsRoutes.getUuid(
+                "<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\"><soap:Body><ns2:echoUuid xmlns:ns2=\"http://l2x6.org/echo-uuid-ws/\"><uuid>85f02a6a-063c-4d09-97ea-ff2d514fd7f7</uuid></ns2:echoUuid></soap:Body></soap:Envelope>"))
+                .isEqualTo("85f02a6a-063c-4d09-97ea-ff2d514fd7f7");
     }
 
     @Test
