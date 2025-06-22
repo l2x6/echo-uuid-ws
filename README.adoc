@@ -1,0 +1,7 @@
+== `echo-uuid-ws` a fast SOAP WebService for testing SOAP clients
+
+[source,shell]
+----
+docker run -p 8080:8080 quay.io/l2x6/echo-uuid-ws:1.0
+curl http://localhost:8080/echo-uuid-ws/soap-1.1?wsdl
+----
