@@ -1,0 +1,38 @@
+name: Build and Push Image
+on:
+  push:
+    branches:
+    - "[0-9]+.[0-9]+"
+
+env:
+  JAVA_VERSION: 21
+
+jobs:
+  build:
+    name: Build and push image
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - name: apt-get -y install podman
+      run: |
+          sudo apt-get update && sudo apt-get -y install podman
+
+    - name: Set up JDK ${{ inputs.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: ${{ env.JAVA_VERSION }}
+        cache: 'maven'
+
+    - name: mvn clean package -DskipTests -ntp
+      run: |
+          ./mvnw clean package -DskipTests -ntp
+      env:
+        QUARKUS_CONTAINER_IMAGE_BUILD: 'true'
+        QUARKUS_CONTAINER_IMAGE_REGISTRY: 'quay.io'
+        QUARKUS_CONTAINER_IMAGE_PUSH: 'true'
+        QUARKUS_CONTAINER_IMAGE_USERNAME: ${{ secrets.QUARKUS_CONTAINER_IMAGE_USERNAME }}
+        QUARKUS_CONTAINER_IMAGE_PASSWORD: ${{ secrets.QUARKUS_CONTAINER_IMAGE_PASSWORD }}
